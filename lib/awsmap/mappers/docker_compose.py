@@ -5,7 +5,7 @@ from lib.awsmap.map import Map
 from diagrams import Cluster, Diagram, Edge
 from diagrams.aws.network import VPC, InternetGateway, NATGateway, ClientVpn, SiteToSiteVpn
 
-from diagrams.oci.storage import Filestorage
+from diagrams.oci.storage import FileStorage
 from diagrams.oci.compute import Container
 
 class DockerComposeMapper(Map):
@@ -35,13 +35,14 @@ class DockerComposeMapper(Map):
                 with Cluster(service_name):
                     container = Container(service_name)
                     service_containers[service_name] = container
-                    if "volumes" in service_config.keys():
-                        for volume in service_config['volumes']:
-                            container << Filestorage("\n".join(volume.split(":")))
-
-                    if "ports" in service_config.keys():
-                        for port in service_config['ports']:
-                            container << Edge(label=port) << localhost
+#                    if "volumes" in service_config.keys():
+#                        for volume in service_config['volumes']:
+#                            if isinstance(volume, str):
+#                                container << FileStorage("\n".join(volume.split(":")))
+#
+#                    if "ports" in service_config.keys():
+#                        for port in service_config['ports']:
+#                            container << Edge(label=port) << localhost
 
             for service_name, service_config in dc_yaml['services'].items():
                 # Dependency edges
